@@ -1,7 +1,7 @@
 #include <Geode/Geode.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
 #include <Geode/cocos/cocoa/CCObject.h>
+#include <Geode/modify/ButtonSprite.hpp>
+#include <Geode/modify/CCMenuItemSpriteExtra.hpp>
 #include <Geode/modify/EditorPauseLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
@@ -18,8 +18,8 @@ struct UnGlowify : Modify<UnGlowify, LevelEditorLayer> {
       auto objs = CCArrayExt<GameObject*>(this->m_objects);
       std::vector<GameObject*> removed_objs;
 
-      for (auto obj : objs) {
-        for (int id : glow_objs) {
+      for (int id : glow_objs) {
+        for (auto obj : objs) {
           if (obj && obj->m_objectID == id) {
             removed_objs.push_back(obj);
           }
@@ -28,26 +28,29 @@ struct UnGlowify : Modify<UnGlowify, LevelEditorLayer> {
 
       for (auto obj : removed_objs) {
         this->m_objects->removeObject(obj);
+        this->removeObject(obj, true);
       }
     }
 };
 
-class $modify(DelAllGlow, EditorPauseLayer){bool init(LevelEditorLayer * lel){if (!EditorPauseLayer::init(lel)){return false;
-}
+struct DelAllGlow : Modify<DelAllGlow, EditorPauseLayer> {
+    bool init(LevelEditorLayer* lel) {
+      if (!EditorPauseLayer::init(lel)) {
+        return false;
+      }
 
-auto menu = this->getChildByID("small-actions-menu");
-auto deglowify_spr = ButtonSprite::create("Remove\nGlow", 30, 0, .4f, true, "bigFont.fnt", "GJ_button_04.png", 30.f);
+      auto menu = this->getChildByID("small-actions-menu");
+      auto deglowify_spr = ButtonSprite::create("Remove\nGlow", 30, 0, .4f, true, "bigFont.fnt", "GJ_button_04.png", 30.f);
 
-deglowify_spr->setScale(.8f);
+      deglowify_spr->setScale(.8f);
 
-auto deglowify_btn = CCMenuItemSpriteExtra::create(deglowify_spr, this, menu_selector(UnGlowify::del_objs_with_id));
+      auto deglowify_btn = CCMenuItemSpriteExtra::create(deglowify_spr, this, menu_selector(UnGlowify::del_objs_with_id));
 
-deglowify_btn->setID("deglowify-btn"_spr);
-menu->insertBefore(deglowify_btn, nullptr);
+      deglowify_btn->setID("deglowify-btn"_spr);
 
-menu->updateLayout();
+      menu->insertBefore(deglowify_btn, nullptr);
+      menu->updateLayout();
 
-return true;
-}
-}
-;
+      return true;
+    }
+};
