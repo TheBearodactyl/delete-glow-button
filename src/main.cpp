@@ -14,7 +14,7 @@ using namespace geode::prelude;
 int glow_objs[] = {505, 504, 503, 1013, 1012, 1011, 1010, 1269, 1274, 1273, 1272, 1271, 1270, 1293, 1292, 1291, 1759, 1758, 1760, 1761, 1762, 1763, 1888, 1887, 1886};
 
 struct UnGlowify : Modify<UnGlowify, LevelEditorLayer> {
-    void del_objs_with_id(int id) {
+    void del_objs_with_id(CCObject* sender) {
       auto objs = CCArrayExt<GameObject*>(this->m_objects);
       std::vector<GameObject*> removed_objs;
 
