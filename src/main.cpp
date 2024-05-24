@@ -32,24 +32,22 @@ struct UnGlowify : Modify<UnGlowify, LevelEditorLayer> {
     }
 };
 
-class DelAllGlow : Modify<DelAllGlow, EditorPauseLayer> {
-    bool init(LevelEditorLayer* lel) {
-      if (!EditorPauseLayer::init(lel)) {
-        return false;
-      }
+class $modify(DelAllGlow, EditorPauseLayer){bool init(LevelEditorLayer * lel){if (!EditorPauseLayer::init(lel)){return false;
+}
 
-      auto menu = this->getChildByID("small-actions-menu");
-      auto deglowify_spr = ButtonSprite::create("Remove\nGlow", 30, 0, .4f, true, "bigFont.fnt", "GJ_button_04.png", 30.f);
+auto menu = this->getChildByID("small-actions-menu");
+auto deglowify_spr = ButtonSprite::create("Remove\nGlow", 30, 0, .4f, true, "bigFont.fnt", "GJ_button_04.png", 30.f);
 
-      deglowify_spr->setScale(.8f);
+deglowify_spr->setScale(.8f);
 
-      auto deglowify_btn = CCMenuItemSpriteExtra::create(deglowify_spr, this, menu_selector(UnGlowify::del_objs_with_id));
+auto deglowify_btn = CCMenuItemSpriteExtra::create(deglowify_spr, this, menu_selector(UnGlowify::del_objs_with_id));
 
-      deglowify_btn->setID("deglowify-btn"_spr);
-      menu->insertBefore(deglowify_btn, nullptr);
+deglowify_btn->setID("deglowify-btn"_spr);
+menu->insertBefore(deglowify_btn, nullptr);
 
-      menu->updateLayout();
+menu->updateLayout();
 
-      return true;
-    }
-};
+return true;
+}
+}
+;
