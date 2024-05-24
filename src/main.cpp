@@ -28,7 +28,7 @@ struct UnGlowify : Modify<UnGlowify, LevelEditorLayer> {
 
       for (auto obj : removed_objs) {
         this->m_objects->removeObject(obj);
-        this->removeObject(obj, true);
+        this->removeObject(obj, false);
       }
     }
 };
